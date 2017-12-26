@@ -28,107 +28,99 @@
 	<div class="wrapper" style="width: 100%; margin-top: 50px; padding: 20px 10px; box-sizing: border-box;">
 		<div class="row">
 			<!-- To Do -->
-			<div class="col-md-4">
-				<div class="panel panel-primary">
+			<div class="col-md-4" onmouseover="showAddButton()" onmouseleave="hideAddButton()">
+				<div class="panel panel-primary panel-box">
 					<div class="panel-heading">
 						<h5 style="text-align: center;">To Do</h5>
 					</div>
 					<div class="panel-body" style="background: #DDD">
 						<div class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
-								<div class="col-md-11" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
+								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
 									<a href="" onClick="hello()" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
-									<a href=""><i class="fa fa-forward"></i></a>
+									<a href=""><i class="fa fa-arrow-right"></i></a>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
-								<div class="col-md-11" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
+								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
 									<a href="" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
-									<a href=""><i class="fa fa-forward"></i></a>
+									<a href=""><i class="fa fa-arrow-right"></i></a>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="panel-footer" style="background: #DDD">
-						<div class="row" style="padding: 0px 10px;">
-							<button data-toggle="modal" data-target="#todoModal" class="btn btn-success">
-								<i class="fa fa-plus"></i> Add a card
-							</button>
+						<div class="row">
+							<div id="addButton" class="col-md-12" style="display: none;">
+								<button data-toggle="modal" data-target="#todoModal" class="btn btn-success">
+									<i class="fa fa-plus"></i> Add an item
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- In Progress -->
 			<div class="col-md-4">
-				<div class="panel panel-success">
+				<div class="panel panel-success panel-box">
 					<div class="panel-heading">
 						<h5 style="text-align: center;">In Progress</h5>
 					</div>
 					<div class="panel-body" style="background: #DDD">
 						<div class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
-								<div class="col-md-11" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
+								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
-									<a href="" onClick="hello()" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
-									<a href=""><i class="fa fa-forward"></i></a>
+									<a href=""><i class="fa fa-arrow-left"></i></a>
+									<a href=""><i class="fa fa-arrow-right"></i></a>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
-								<div class="col-md-11" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
+								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
-									<a href="" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
-									<a href=""><i class="fa fa-forward"></i></a>
+									<a href=""><i class="fa fa-arrow-left"></i></a>
+									<a href=""><i class="fa fa-arrow-right"></i></a>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="panel-footer" style="background: #DDD">
-						<div class="row" style="padding: 0px 10px;">
-							<button data-toggle="modal" data-target="#todoModal" class="btn btn-success">
-								<i class="fa fa-plus"></i> Add a card
-							</button>
-						</div>
 					</div>
 				</div>
 			</div>
 			<!-- Done -->
 			<div class="col-md-4">
-				<div class="panel panel-warning">
+				<div class="panel panel-warning panel-box">
 					<div class="panel-heading">
 						<h5 style="text-align: center;">Done</h5>
 					</div>
 					<div class="panel-body" style="background: #DDD">
 						<div class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
-								<div class="col-md-11" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
+								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
-									<a href="" onClick="hello()" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
-									<a href=""><i class="fa fa-forward"></i></a>
+									<a href=""><i class="fa fa-trash"></i></a>
+									<a href=""><i class="fa fa-arrow-left"></i></a>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
-								<div class="col-md-11" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
+								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
-									<a href="" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
-									<a href=""><i class="fa fa-forward"></i></a>
+									<a href=""><i class="fa fa-trash"></i></a>
+									<a href=""><i class="fa fa-arrow-left"></i></a>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="panel-footer" style="background: #DDD">
-						<div class="row" style="padding: 0px 10px;">
-							<button data-toggle="modal" data-target="#todoModal" class="btn btn-success">
-								<i class="fa fa-plus"></i> Add a card
-							</button>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -186,6 +178,15 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		function showAddButton(){
+			document.getElementById("addButton").style= "display : flex";
+			document.getElementById("addButton").classList.add('col-md-12');
+		}
+		function hideAddButton(){
+			document.getElementById("addButton").style= "display : none";
+		}
+	</script>
 	<span th:substituteby="commons :: common-js"></span>
 </body>
 </html>

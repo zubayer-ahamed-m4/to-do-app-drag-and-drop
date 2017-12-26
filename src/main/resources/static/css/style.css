@@ -1,4 +1,13 @@
 @CHARSET "UTF-8";
-.site-name{
-	text-decoration: none;
+
+.item-box{
+	text-align: justify;
+}
+.item-box:HOVER {
+	background: #868686 !important;
+	color: #fff;
+	cursor: pointer;
+}
+.panel-box{
+	cursor: pointer;
 }
