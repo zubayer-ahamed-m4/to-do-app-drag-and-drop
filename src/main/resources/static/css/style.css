@@ -2,11 +2,23 @@
 
 .item-box{
 	text-align: justify;
+	box-shadow: 0px 0px 10px #999b9c;
+	color: #727475;
 }
 .item-box:HOVER {
-	background: #868686 !important;
-	color: #fff;
+	background: #edeff0 !important;
+	color: #727475;
 	cursor: pointer;
+}
+#editLinkButton{
+	display: none;
+}
+.item-box:HOVER > #editLinkButton{
+	display: inline-block !important;
+	color: #727475;
+}
+#editLinkButton:hover{
+	color: red;
 }
 .panel-box{
 	cursor: pointer;

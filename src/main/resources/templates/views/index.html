@@ -5,7 +5,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <span th:substituteby="commons :: common-css"></span>
-
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -14,10 +13,10 @@
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" th:href="@{/}">User Name</a>
+				<a class="navbar-brand" href="#">User Name</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar" style="text-align: center; line-height: 50px;">
-				<a href="#" style="text-decoration: none; font-size: 20px; color: #fff;">ToDo App</a>
+				<a th:href="@{/}" style="text-decoration: none; font-size: 20px; color: #fff;">ToDo App</a>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -28,51 +27,61 @@
 	<div class="wrapper" style="width: 100%; margin-top: 50px; padding: 20px 10px; box-sizing: border-box;">
 		<div class="row">
 			<!-- To Do -->
-			<div class="col-md-4" onmouseover="showAddButton()" onmouseleave="hideAddButton()">
+			<div class="col-md-4">
 				<div class="panel panel-primary panel-box">
 					<div class="panel-heading">
 						<h5 style="text-align: center;">To Do</h5>
 					</div>
-					<div class="panel-body" style="background: #DDD">
-						<!-- items loop -->
-						<div th:each="item,num : ${todoItems}" class="col-md-12" style="margin-bottom: 10px;">
+					<div class="panel-body" style="background: #e2e4e6">
+						<!-- add item button -->
+						<span th:if="${update != 'true'}">
+							<div class="col-md-12" style="margin-bottom: 10px;">
+								<div class="row">
+									<a href="#" onClick="showAddButton()">Add item</a>
+								</div>
+							</div>
+						</span>
+						<!-- add item input field -->
+						<div id="itemAddInputField" class="col-md-12" style="margin-bottom: 10px; display:none;">
 							<div class="row">
-								<span th:if="${update == 'true'}"> <span th:if="${todoItemById.id == item.id}">
-										<form th:action="@{/updateItem}" method="post" th:object="${todoItemById}">
-											<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
-												<input type="hidden" th:field="*{id}"/>
-												<textarea class="form-control" th:field="*{des}"></textarea>
-												<button type="submit" class="btn btn-warning btn-sm pull-right" style="margin-top: 10px;"><i class="fa fa-refresh"></i></button>
-											</div>
-											
-										</form>
-								</span> <span th:if="${todoItemById.id != item.id}">
-										<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;" th:text="${{item.des}}"></div>
-								</span>
-								</span> <span th:if="${update != 'true'}">
-									<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;" th:text="${{item.des}}"></div>
-								</span> 
+								<form th:action="@{/addTodoItem}" th:object="${todoItem}" method="post">
+									<span th:if="${#fields.hasErrors('des')}" th:errors="*{des}" class="text-danger">adfasd</span>
+									<textarea required="required" th:field="*{des}" rows="5" cols="" class="form-control"></textarea>
+									<button type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;"><i class="fa fa-save"></i> Save </button>
+									<a onClick="hideAddButton()" href="#" class="btn btn-danger btn-sm" style="margin-top: 10px;"><i class="fa fa-times"></i></a>
+								</form>
+							</div>
+						</div>
+						<!-- display items loop -->
+						<div id="itemMainBox" th:each="item,num : ${todoItems}" class="col-md-12" style="margin-bottom: 10px;">
+							<div class="row">
+								<!-- if it is not for update -->
 								<span th:if="${update != 'true'}">
-									<div class="col-md-1">
-										<a th:href="@{/updateTodoItem/} + ${item.id}"><i class="fa fa-edit"></i></a> <a href=""><i class="fa fa-arrow-right"></i></a>
+									<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
+										<a id="editLinkButton" th:href="@{/updateTodoItem/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-edit"></i></a>
+										<p style="margin: 0;" th:text="${{item.des}}"></p>
 									</div>
 								</span> 
-								<span th:if="${update == 'true'}">
+								<!-- if it is update -->
+								<span th:if="${update == 'true'}"> 
+									<!-- updatable item box -->
+									<span th:if="${todoItemById.id == item.id}">
+										<form th:action="@{/updateItem}" method="post" th:object="${todoItemById}">
+											<div class="col-md-12" style="background: #fff; padding: 10px; border-radius: 5px;">
+												<input type="hidden" th:field="*{id}"/>
+												<textarea rows="5" class="form-control" th:field="*{des}"></textarea>
+												<button type="submit" class="btn btn-warning btn-sm" style="margin-top: 10px;"><i class="fa fa-pencil-square-o"></i> Update</button>
+											</div>
+										</form>
+									</span> 
+									<!-- non updatable item -->
 									<span th:if="${todoItemById.id != item.id}">
-										<div class="col-md-1">
-											<a th:href="@{/updateTodoItem/} + ${item.id}"><i class="fa fa-edit"></i></a> <a href=""><i class="fa fa-arrow-right"></i></a>
+										<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
+											<a th:href="@{/updateTodoItem/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-edit"></i></a>
+											<p style="margin: 0;" th:text="${{item.des}}"></p>
 										</div>
 									</span>
 								</span>
-							</div>
-						</div>
-					</div>
-					<div class="panel-footer" style="background: #DDD">
-						<div class="row">
-							<div id="addButton" class="col-md-12" style="display: none;">
-								<button data-toggle="modal" data-target="#todoModal" class="btn btn-success">
-									<i class="fa fa-plus"></i> Add an item
-								</button>
 							</div>
 						</div>
 					</div>
@@ -84,7 +93,7 @@
 					<div class="panel-heading">
 						<h5 style="text-align: center;">In Progress</h5>
 					</div>
-					<div class="panel-body" style="background: #DDD">
+					<div class="panel-body" style="background: #e2e4e6">
 						<div class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
 								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
@@ -102,7 +111,6 @@
 							</div>
 						</div>
 					</div>
-					<div class="panel-footer" style="background: #DDD"></div>
 				</div>
 			</div>
 			<!-- Done -->
@@ -111,7 +119,7 @@
 					<div class="panel-heading">
 						<h5 style="text-align: center;">Done</h5>
 					</div>
-					<div class="panel-body" style="background: #DDD">
+					<div class="panel-body" style="background: #e2e4e6">
 						<div class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
 								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
@@ -129,70 +137,18 @@
 							</div>
 						</div>
 					</div>
-					<div class="panel-footer" style="background: #DDD"></div>
-				</div>
-			</div>
-			<!-- todo add Modal -->
-			<div id="todoModal" class="modal fade" role="dialog">
-				<div class="modal-dialog">
-					<!-- Modal content-->
-					<form th:action="@{/addTodoItem}" th:object="${todoItem}" method="post">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Add todo item</h4>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<label>Add description</label><span th:if="${#fields.hasErrors('des')}" th:errors="*{des}" class="pull-right text-danger">adfasd</span>
-									<textarea class="form-control" th:field="*{des}" required="required"></textarea>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="submit" class="btn btn-success pull-left">
-									<i class="fa fa-save"></i> Add
-								</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-			<!-- todo edit Modal -->
-			<div th:if="${update == 'true'}" id="todoEditModal" class="modal fade" role="dialog">
-				<div class="modal-dialog">
-					<!-- Modal content-->
-					<form action="" method="post">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Edit todo item</h4>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<label>Description</label>
-									<textarea class="form-control" required="required"></textarea>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="submit" class="btn btn-warning pull-left">
-									<i class="fa fa-refresh"></i> Update
-								</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
 		function showAddButton() {
-			document.getElementById("addButton").style = "display : flex";
-			document.getElementById("addButton").classList.add('col-md-12');
+			document.getElementById("itemAddInputField").style = "display : block";
+			document.getElementById("itemAddInputField").style = "margin-bottom : 10px";
+			document.getElementById("itemAddInputField").classList.add('col-md-12');
 		}
 		function hideAddButton() {
-			document.getElementById("addButton").style = "display : none";
+			document.getElementById("itemAddInputField").style = "display : none";
 		}
 	</script>
 	<span th:substituteby="commons :: common-js"></span>
