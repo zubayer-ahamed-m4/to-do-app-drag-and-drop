@@ -17,7 +17,7 @@
 				<a class="navbar-brand" th:href="@{/}">User Name</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar" style="text-align: center; line-height: 50px;">
-				<a href="#" style="text-decoration: none; font-size: 20px; color: #fff;">ToDo App</a>				
+				<a href="#" style="text-decoration: none; font-size: 20px; color: #fff;">ToDo App</a>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -37,11 +37,33 @@
 						<!-- items loop -->
 						<div th:each="item,num : ${todoItems}" class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
-								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;" th:text="${{item.des}}"></div>
-								<div class="col-md-1">
-									<a th:href="@{/updateTodoItem/} + ${item.id}" onClick="hello()" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
-									<a href=""><i class="fa fa-arrow-right"></i></a>
-								</div>
+								<span th:if="${update == 'true'}"> <span th:if="${todoItemById.id == item.id}">
+										<form th:action="@{/updateItem}" method="post" th:object="${todoItemById}">
+											<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
+												<input type="hidden" th:field="*{id}"/>
+												<textarea class="form-control" th:field="*{des}"></textarea>
+												<button type="submit" class="btn btn-warning btn-sm pull-right" style="margin-top: 10px;"><i class="fa fa-refresh"></i></button>
+											</div>
+											
+										</form>
+								</span> <span th:if="${todoItemById.id != item.id}">
+										<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;" th:text="${{item.des}}"></div>
+								</span>
+								</span> <span th:if="${update != 'true'}">
+									<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;" th:text="${{item.des}}"></div>
+								</span> 
+								<span th:if="${update != 'true'}">
+									<div class="col-md-1">
+										<a th:href="@{/updateTodoItem/} + ${item.id}"><i class="fa fa-edit"></i></a> <a href=""><i class="fa fa-arrow-right"></i></a>
+									</div>
+								</span> 
+								<span th:if="${update == 'true'}">
+									<span th:if="${todoItemById.id != item.id}">
+										<div class="col-md-1">
+											<a th:href="@{/updateTodoItem/} + ${item.id}"><i class="fa fa-edit"></i></a> <a href=""><i class="fa fa-arrow-right"></i></a>
+										</div>
+									</span>
+								</span>
 							</div>
 						</div>
 					</div>
@@ -67,8 +89,7 @@
 							<div class="row">
 								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
-									<a href=""><i class="fa fa-arrow-left"></i></a>
-									<a href=""><i class="fa fa-arrow-right"></i></a>
+									<a href=""><i class="fa fa-arrow-left"></i></a> <a href=""><i class="fa fa-arrow-right"></i></a>
 								</div>
 							</div>
 						</div>
@@ -76,14 +97,12 @@
 							<div class="row">
 								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
-									<a href=""><i class="fa fa-arrow-left"></i></a>
-									<a href=""><i class="fa fa-arrow-right"></i></a>
+									<a href=""><i class="fa fa-arrow-left"></i></a> <a href=""><i class="fa fa-arrow-right"></i></a>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="panel-footer" style="background: #DDD">
-					</div>
+					<div class="panel-footer" style="background: #DDD"></div>
 				</div>
 			</div>
 			<!-- Done -->
@@ -97,8 +116,7 @@
 							<div class="row">
 								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
-									<a href=""><i class="fa fa-trash"></i></a>
-									<a href=""><i class="fa fa-arrow-left"></i></a>
+									<a href=""><i class="fa fa-trash"></i></a> <a href=""><i class="fa fa-arrow-left"></i></a>
 								</div>
 							</div>
 						</div>
@@ -106,14 +124,12 @@
 							<div class="row">
 								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
 								<div class="col-md-1">
-									<a href=""><i class="fa fa-trash"></i></a>
-									<a href=""><i class="fa fa-arrow-left"></i></a>
+									<a href=""><i class="fa fa-trash"></i></a> <a href=""><i class="fa fa-arrow-left"></i></a>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="panel-footer" style="background: #DDD">
-					</div>
+					<div class="panel-footer" style="background: #DDD"></div>
 				</div>
 			</div>
 			<!-- todo add Modal -->
@@ -143,7 +159,7 @@
 				</div>
 			</div>
 			<!-- todo edit Modal -->
-			<div id="todoEditModal" class="modal fade" role="dialog">
+			<div th:if="${update == 'true'}" id="todoEditModal" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 					<!-- Modal content-->
 					<form action="" method="post">
@@ -171,12 +187,12 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		function showAddButton(){
-			document.getElementById("addButton").style= "display : flex";
+		function showAddButton() {
+			document.getElementById("addButton").style = "display : flex";
 			document.getElementById("addButton").classList.add('col-md-12');
 		}
-		function hideAddButton(){
-			document.getElementById("addButton").style= "display : none";
+		function hideAddButton() {
+			document.getElementById("addButton").style = "display : none";
 		}
 	</script>
 	<span th:substituteby="commons :: common-js"></span>
