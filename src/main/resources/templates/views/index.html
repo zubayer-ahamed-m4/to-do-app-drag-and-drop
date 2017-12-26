@@ -34,20 +34,12 @@
 						<h5 style="text-align: center;">To Do</h5>
 					</div>
 					<div class="panel-body" style="background: #DDD">
-						<div class="col-md-12" style="margin-bottom: 10px;">
+						<!-- items loop -->
+						<div th:each="item,num : ${todoItems}" class="col-md-12" style="margin-bottom: 10px;">
 							<div class="row">
-								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
+								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;" th:text="${{item.des}}"></div>
 								<div class="col-md-1">
-									<a href="" onClick="hello()" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
-									<a href=""><i class="fa fa-arrow-right"></i></a>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12" style="margin-bottom: 10px;">
-							<div class="row">
-								<div class="col-md-11 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">to do app sfsdfs asdf asdf adsf adsf asf sdf sadfasdf asf sdafsdf ad</div>
-								<div class="col-md-1">
-									<a href="" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
+									<a th:href="@{/updateTodoItem/} + ${item.id}" onClick="hello()" data-toggle="modal" data-target="#todoEditModal"><i class="fa fa-edit"></i></a>
 									<a href=""><i class="fa fa-arrow-right"></i></a>
 								</div>
 							</div>
@@ -128,7 +120,7 @@
 			<div id="todoModal" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 					<!-- Modal content-->
-					<form action="" method="post">
+					<form th:action="@{/addTodoItem}" th:object="${todoItem}" method="post">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -136,8 +128,8 @@
 							</div>
 							<div class="modal-body">
 								<div class="form-group">
-									<label>Add description</label>
-									<textarea class="form-control" required="required"></textarea>
+									<label>Add description</label><span th:if="${#fields.hasErrors('des')}" th:errors="*{des}" class="pull-right text-danger">adfasd</span>
+									<textarea class="form-control" th:field="*{des}" required="required"></textarea>
 								</div>
 							</div>
 							<div class="modal-footer">
