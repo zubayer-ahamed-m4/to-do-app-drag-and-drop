@@ -1,0 +1,11 @@
+<div xmlns:th="http://www.thymeleaf.org">
+	<span th:remove="tag" th:fragment="common-css" xmlns:th="http://www.thymeleaf.org">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"/>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.css}"/>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+	</span>
+	<span th:remove="tag" th:fragment="common-js" xmlns:th="http://www.thymeleaf.org">
+		<script type="text/javascript" th:src="@{/js/jquery-3.2.1.js}"></script>
+		<script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+	</span>
+</div>
