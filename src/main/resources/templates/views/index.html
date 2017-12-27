@@ -77,7 +77,7 @@
 									<!-- non updatable item -->
 									<span th:if="${todoItemById.id != item.id}">
 										<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
-											<a th:href="@{/updateTodoItem/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-edit"></i></a>
+											<a id="editLinkButton" th:href="@{/updateTodoItem/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-edit"></i></a>
 											<p style="margin: 0;" th:text="${{item.des}}"></p>
 										</div>
 									</span>
