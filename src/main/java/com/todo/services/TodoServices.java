@@ -19,7 +19,9 @@ public class TodoServices {
 		if (todoList.stream().filter(r -> r.getId() == todoItem.getId()).count() > 0) {
 			throw new TodoException("Item Already Exist");
 		}
-		todoItem.setId(new Random().nextLong());
+		if(todoItem.getId() == null) {
+			todoItem.setId(new Random().nextLong());
+		}
 		todoList.add(todoItem);
 	}
 
