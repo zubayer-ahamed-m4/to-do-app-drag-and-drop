@@ -1,130 +1,137 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title th:text="#{todoapp.title}">ToDo APP</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<span th:substituteby="commons :: common-css"></span>
-</head>
-<body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" th:href="@{/}" th:text="#{todoapp.appName}"></a>
+	<head>
+		<title th:text="#{todoapp.title}">ToDo APP</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<span th:substituteby="commons :: common-css"></span>
+	</head>
+	<body>
+	<!-- Top Fixed Menu -->
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" th:href="@{/}" th:text="#{todoapp.appName}"></a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar" style="text-align: center; line-height: 50px;">
+					<a href="#" style="text-decoration: none; font-size: 20px; color: #fff;"><i class="fa fa-user"></i> User Name</a>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					</ul>
+				</div>
 			</div>
-			<div class="collapse navbar-collapse" id="myNavbar" style="text-align: center; line-height: 50px;">
-				<a href="#" style="text-decoration: none; font-size: 20px; color: #fff;"><i class="fa fa-user"></i> User Name</a>
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<div class="wrapper" style="width: 100%; margin-top: 50px; padding: 20px 10px; box-sizing: border-box;">
-		<div class="row">
-			<!-- To Do -->
-			<div class="col-md-4">
-				<div class="panel panel-primary panel-box">
-					<div class="panel-heading">
-						<h4 style="text-align: center;" th:text="#{todoapp.todoBox}">To Do</h4>
-					</div>
-					<div class="panel-body" style="background: #e2e4e6">
-						<!-- add item button -->
-						<span th:if="${update != 'true'}">
-							<div class="col-md-12" style="margin-bottom: 10px;">
+		</nav>
+		<!-- Body Content -->
+		<div class="wrapper" style="width: 100%; margin-top: 50px; padding: 20px 10px; box-sizing: border-box;">
+			<div class="row">
+				<!-- set the data for javascript use -->
+				<div class="col-md-12" id="message" style="display: none;">
+					<input type="hidden" id="itemId"/>
+					<input type="hidden" id="fromId"/>
+					<input type="hidden" id="toId"/>
+				</div>
+				<!-- To Do Panel -->
+				<div class="col-md-4">
+					<div class="panel panel-primary panel-box">
+						<div class="panel-heading">
+							<h4 style="text-align: center;" th:text="#{todoapp.todoBox}">To Do</h4>
+						</div>
+						<div id="todo" class="panel-body drop-box" ondrop="drop(event, this)" ondragover="allowDrop(event)" style="background: #e2e4e6;  min-height: 80px;">
+							<!-- add item button -->
+							<span th:if="${update != 'true'}">
+								<div class="col-md-12" style="margin-bottom: 10px;">
+									<div class="row">
+										<a href="#" onClick="showAddButton()">Add item</a>
+									</div>
+								</div>
+							</span>
+							<!-- add item input field -->
+							<div id="itemAddInputField" class="col-md-12" style="margin-bottom: 10px; display:none;">
 								<div class="row">
-									<a href="#" onClick="showAddButton()">Add item</a>
+									<form th:action="@{/addTodoItem}" th:object="${todoItem}" method="post">
+										<span th:if="${#fields.hasErrors('des')}" th:errors="*{des}" class="text-danger">adfasd</span>
+										<textarea required="required" th:field="*{des}" rows="5" cols="" class="form-control"></textarea>
+										<button type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;"><i class="fa fa-save"></i> Save </button>
+										<a onClick="hideAddButton()" href="#" class="btn btn-danger btn-sm" style="margin-top: 10px;"><i class="fa fa-times"></i></a>
+									</form>
 								</div>
 							</div>
-						</span>
-						<!-- add item input field -->
-						<div id="itemAddInputField" class="col-md-12" style="margin-bottom: 10px; display:none;">
-							<div class="row">
-								<form th:action="@{/addTodoItem}" th:object="${todoItem}" method="post">
-									<span th:if="${#fields.hasErrors('des')}" th:errors="*{des}" class="text-danger">adfasd</span>
-									<textarea required="required" th:field="*{des}" rows="5" cols="" class="form-control"></textarea>
-									<button type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;"><i class="fa fa-save"></i> Save </button>
-									<a onClick="hideAddButton()" href="#" class="btn btn-danger btn-sm" style="margin-top: 10px;"><i class="fa fa-times"></i></a>
-								</form>
-							</div>
-						</div>
-						<!-- display items loop -->
-						<div id="itemMainBox" th:each="item,num : ${todoItems}" class="col-md-12" style="margin-bottom: 10px;">
-							<div class="row">
-								<!-- if it is not for update -->
-								<span th:if="${update != 'true'}">
-									<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
-										<a title="Move to In Progress" id="editLinkButton" th:href="@{/moveToInProgress/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-arrow-right"></i></a>
-										<a title="Update" id="editLinkButton" th:href="@{/updateTodoItem/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-edit"></i></a>
-										<p style="margin: 0;" th:text="${{item.des}}"></p>
-									</div>
-								</span> 
-								<!-- if it is update -->
-								<span th:if="${update == 'true'}"> 
-									<!-- updatable item box -->
-									<span th:if="${todoItemById.id == item.id}">
-										<form th:action="@{/updateItem}" method="post" th:object="${todoItemById}">
-											<div class="col-md-12" style="background: #fff; padding: 10px; border-radius: 5px;">
-												<input type="hidden" th:field="*{id}"/>
-												<span style="padding-bottom: 5px;" th:if="${#fields.hasErrors('des')}" th:errors="*{des}" class="text-danger">adfasd</span>
-												<textarea rows="5" class="form-control" th:field="*{des}"></textarea>
-												<button type="submit" class="btn btn-warning btn-sm" style="margin-top: 10px;"><i class="fa fa-pencil-square-o"></i> Update</button>
-												<a th:href="@{/}" class="btn btn-danger btn-sm" style="margin-top: 10px;"><i class="fa fa-times"></i></a>
-											</div>
-										</form>
-									</span> 
-									<!-- non updatable item -->
-									<span th:if="${todoItemById.id != item.id}">
+							<!-- display items loop -->
+							<div th:id="${item.id}" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" th:each="item,num : ${todoItems}" class="col-md-12" style="margin-bottom: 10px;">
+								<div class="row">
+									<!-- if it is not for update -->
+									<span th:if="${update != 'true'}">
 										<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
-											<a title="Move to In Progress" id="editLinkButton" th:href="@{/moveToInProgress/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-arrow-right"></i></a>
-											<a title="Update" id="editLinkButton" th:href="@{/updateTodoItem/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-edit"></i></a>
+											<a onClick="deleteItem(this.id)" title="Delete" th:id="${item.id}" href="#" class="pull-right editLinkButton" style="margin-left: 10px;"><i class="fa fa-trash"></i></a>
+											<a title="Update" th:id="${item.id}" th:href="@{/updateTodoItem/} + ${item.id}" class="pull-right editLinkButton" style="margin-left: 10px;"><i class="fa fa-edit"></i></a>
 											<p style="margin: 0;" th:text="${{item.des}}"></p>
 										</div>
+									</span> 
+									<!-- if it is update -->
+									<span th:if="${update == 'true'}"> 
+										<!-- updatable item box -->
+										<span th:if="${todoItemById.id == item.id}">
+											<form th:action="@{/updateItem}" method="post" th:object="${todoItemById}">
+												<div class="col-md-12" style="background: #fff; padding: 10px; border-radius: 5px;">
+													<input type="hidden" th:field="*{id}"/>
+													<span style="padding-bottom: 5px;" th:if="${#fields.hasErrors('des')}" th:errors="*{des}" class="text-danger">adfasd</span>
+													<textarea rows="5" class="form-control" th:field="*{des}"></textarea>
+													<button type="submit" class="btn btn-warning btn-sm" style="margin-top: 10px;"><i class="fa fa-pencil-square-o"></i> Update</button>
+													<a th:href="@{/}" class="btn btn-danger btn-sm" style="margin-top: 10px;"><i class="fa fa-times"></i></a>
+												</div>
+											</form>
+										</span> 
+										<!-- non updatable item -->
+										<span th:if="${todoItemById.id != item.id}">
+											<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
+												<a onClick="deleteItem(this.id)" title="Delete" th:id="${item.id}" href="#" class="pull-right editLinkButton" style="margin-left: 10px;"><i class="fa fa-trash"></i></a>
+												<a title="Update" th:id="${item.id}" th:href="@{/updateTodoItem/} + ${item.id}" class="pull-right editLinkButton" style="margin-left: 10px;"><i class="fa fa-edit"></i></a>
+												<p style="margin: 0;" th:text="${{item.des}}"></p>
+											</div>
+										</span>
 									</span>
-								</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- In Progress -->
-			<div class="col-md-4">
-				<div class="panel panel-success panel-box">
-					<div class="panel-heading">
-						<h4 style="text-align: center;" th:text="#{todoapp.inProgressBox}">In Progress</h4>
-					</div>
-					<div class="panel-body" style="background: #e2e4e6">
-						<!-- loop -->
-						<div id="itemMainBox" th:each="item,num : ${inProgressItems}" class="col-md-12" style="margin-bottom: 10px;">
-							<div class="row">
-								<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
-									<a title="Move to Done" id="editLinkButton" th:href="@{/moveToDone/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-arrow-right"></i></a>
-									<a title="Move to ToDo" id="editLinkButton" th:href="@{/moveToTodo/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-arrow-left"></i></a>
-									<p style="margin: 0;" th:text="${{item.des}}"></p>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<!-- Done -->
-			<div class="col-md-4">
-				<div class="panel panel-warning panel-box">
-					<div class="panel-heading">
-						<h4 style="text-align: center;" th:text="#{todoapp.doneBox}">Done</h4>
+				<!-- In Progress Panel -->
+				<div class="col-md-4">
+					<div class="panel panel-success panel-box">
+						<div class="panel-heading">
+							<h4 style="text-align: center;" th:text="#{todoapp.inProgressBox}">In Progress</h4>
+						</div>
+						<div id="inprogress" class="panel-body drop-box" ondrop="drop(event, this)" ondragover="allowDrop(event)" style="background: #e2e4e6; min-height: 80px;">
+							<!-- loop -->
+							<div th:id="${item.id}" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" th:each="item,num : ${inProgressItems}" class="col-md-12" style="margin-bottom: 10px;">
+								<div class="row">
+									<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
+										<a onClick="deleteItem(this.id)" title="Delete" th:id="${item.id}" href="#" class="pull-right editLinkButton" style="margin-left: 10px;"><i class="fa fa-trash"></i></a>
+										<p style="margin: 0;" th:text="${{item.des}}"></p>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="panel-body" style="background: #e2e4e6">
-						<!-- loop -->
-						<div id="itemMainBox" th:each="item,num : ${doneItems}" class="col-md-12" style="margin-bottom: 10px;">
-							<div class="row">
-								<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
-									<a onClick="return confirm('Are you want to delete this item?')" title="Delete" id="editLinkButton" th:href="@{/deleteItem/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-trash"></i></a>
-									<a title="Move to In Progress" id="editLinkButton" th:href="@{/moveToInProgressFromDone/} + ${item.id}" class="pull-right" style="margin-left: 10px;"><i class="fa fa-arrow-left"></i></a>
-									<p style="margin: 0;" th:text="${{item.des}}"></p>
+				</div>
+				<!-- Done Panel -->
+				<div class="col-md-4">
+					<div class="panel panel-warning panel-box">
+						<div class="panel-heading">
+							<h4 style="text-align: center;" th:text="#{todoapp.doneBox}">Done</h4>
+						</div>
+						<div id="done" class="panel-body drop-box" ondrop="drop(event, this)" ondragover="allowDrop(event)" style="background: #e2e4e6; min-height: 80px;">
+							<!-- loop -->
+							<div th:id="${item.id}" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false"  th:each="item,num : ${doneItems}" class="col-md-12" style="margin-bottom: 10px;">
+								<div class="row">
+									<div class="col-md-12 item-box" style="background: #fff; padding: 10px; border-radius: 5px;">
+										<span onClick="deleteItem(this.id)" title="Delete" th:id="${item.id}" class="pull-right editLinkButton" style="margin-left: 10px;"><i class="fa fa-trash"></i></span>
+										<p style="margin: 0;" th:text="${{item.des}}"></p>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -132,17 +139,71 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<script type="text/javascript">
-		function showAddButton() {
-			document.getElementById("itemAddInputField").style = "display : block";
-			document.getElementById("itemAddInputField").style = "margin-bottom : 10px";
-			document.getElementById("itemAddInputField").classList.add('col-md-12');
-		}
-		function hideAddButton() {
-			document.getElementById("itemAddInputField").style = "display : none";
-		}
-	</script>
-	<span th:substituteby="commons :: common-js"></span>
-</body>
+		<script type="text/javascript">
+			function showAddButton() {
+				document.getElementById("itemAddInputField").style = "display : block";
+				document.getElementById("itemAddInputField").style = "margin-bottom : 10px";
+				document.getElementById("itemAddInputField").classList.add('col-md-12');
+			}
+			
+			function hideAddButton() {
+				document.getElementById("itemAddInputField").style = "display : none";
+			}
+			
+			function allowDrop(ev) {
+			  	ev.preventDefault();
+			}
+	
+			function drag(ev) {
+			  	ev.dataTransfer.setData("text", ev.target.id);
+			  	var id = ev.target.id;
+				document.getElementById("itemId").value = id;
+				document.getElementById("fromId").value = document.getElementById(id).parentNode.id;
+			}
+	
+			function drop(ev, el) {
+		  		ev.preventDefault();
+		  		var data = ev.dataTransfer.getData("text");
+		  		el.appendChild(document.getElementById(data));
+	  			document.getElementById("toId").value = document.getElementById(data).parentNode.id;
+	  			doWork();
+			}
+			
+			function doWork(){
+				var fromId = document.getElementById("fromId").value;
+				var itemId = document.getElementById("itemId").value;
+				var toId = document.getElementById("toId").value;
+				var objectData = {"name" : "no"};
+				$.ajax({
+					method : "POST",
+					url : "/rest/changeData/" + fromId + "/" + itemId + "/" + toId,
+					contentType : "application/json",
+					data : JSON.stringify(objectData)
+				}).done(function(msg) {
+					if(msg == "success"){
+						document.location.reload() ;
+					}
+				});
+			}
+			
+			function deleteItem(id){
+				if(!confirm('Are you want to delete this item?')){
+					return;
+				}
+				var parentId = document.getElementById(id).parentNode.id;
+				var objectData = {"name" : "no"};
+				$.ajax({
+					method : "POST",
+					url : "/rest/deleteData/" + parentId + "/" + id,
+					contentType : "application/json",
+					data : JSON.stringify(objectData)
+				}).done(function(msg) {
+					if(msg == "success"){
+						document.location.reload() ;
+					}
+				});
+			}
+		</script>
+		<span th:substituteby="commons :: common-js"></span>
+	</body>
 </html>

@@ -10,13 +10,13 @@
 	color: #727475;
 	cursor: pointer;
 }
-#editLinkButton{
+.editLinkButton{
 	display: none;
 }
-.item-box:HOVER > #editLinkButton{
+.item-box:HOVER > .editLinkButton{
 	display: inline-block !important;
 }
-#editLinkButton:hover{
+.editLinkButton:hover{
 	color: red;
 }
 .panel-box{
